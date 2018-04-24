@@ -17,7 +17,11 @@
     "ts-jest": "^22.4.4",
     "typescript": "^2.8.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/ramda": "^0.25.24",
+    "immutable": "^3.8.2",
+    "ramda": "^0.25.0"
+  },
   "peerDependencies": {},
   "author": "Yulong Ruan <ruanyu1@gmail.com>",
   "license": "MIT",
