@@ -1,7 +1,7 @@
-import { Record, Iterable, Set, List, Map } from 'immutable'
-import { compose, type, mapObjIndexed } from 'ramda'
+import { Record, Map } from 'immutable'
+import { compose, mapObjIndexed } from 'ramda'
 
-import { getField, setField, toggleField, incField, decField } from './utils'
+import { getField, setField } from './utils'
 
 interface Dictionary {
   [key: string]: any
@@ -16,13 +16,17 @@ type State = any
 
 type Getter<T> = (s: State) => T
 type Setter<T> = (v: T) => (s: State) => State
-type Clear = (s: State) => State
+type EmptyImmutableSetter = (s: State) => State
+type ImmutableSetter = (v: any) => (s: State) => State
 
 interface ComputedProps<T> {
   getter: Getter<T>;
   setter: Setter<T>;
-  clear: Clear;
-  push: (v: any) => (s: State) => State;
+  clear: EmptyImmutableSetter;
+  push: ImmutableSetter;
+  unshift: ImmutableSetter;
+  pop: EmptyImmutableSetter;
+  shift: EmptyImmutableSetter;
 }
 
 type ComputedState<T> = {
@@ -58,28 +62,32 @@ export const createState = <T extends Dictionary>(config: StateConfig<T>): State
   const assignProps = (value: any, prop: string) => {
     const getter = compose(getField(prop), g)
     const setter = (v: any) => compose(setField(prop)(v), g)
+    // const flippedSetter = flipCurry(setter)
     const clear = (s: State) => {
       const c = getter(s)
       return setter(c.clear())(s)
     }
+    // TODO it should type safe
     const push = (v: any) => (s: State) => {
+      // return compose(flippedSetter(s), c => c.push(v), getter)(s)
       const c = getter(s)
       return setter(c.push(v))(s)
     }
-    const operations = { getter, setter, clear, push }
-
-    const handler = {
-      get: (o: any, p: string) => {
-        if (!value[p] && p !== 'getter' && p !== 'setter') {
-          throw new Error(`'${p}' is not defined on '${value.toString()}'`)
-        } else {
-          return o[p]
-        }
-      }
+    const unshift = (v: any) => (s: State) => {
+      const c = getter(s)
+      return setter(c.unshift(v))(s)
     }
+    const pop = (s: State) => {
+      const c = getter(s)
+      return setter(c.pop())(s)
+    }
+    const shift = (s: State) => {
+      const c = getter(s)
+      return setter(c.shift())(s)
+    }
+    const operations = { getter, setter, clear, push, unshift, pop, shift }
 
-    const proxy = new Proxy(operations, handler)
-    return proxy
+    return operations
   }
 
   const computedState = mapObjIndexed(assignProps, config.fields) as ComputedState<T>

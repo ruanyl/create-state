@@ -25,7 +25,7 @@ describe('String and Number', () => {
     expect(initState.get('name')).toBe('my name')
   })
 
-  it('should set value', function() {
+  it('should set a value', function() {
     const initState = State.create()
     const newState = State.age.setter(20)(initState)
     expect(newState.get('age')).toBe(20)
@@ -34,5 +34,15 @@ describe('String and Number', () => {
     const anotherState = State.name.setter('another name')(newState)
     expect(anotherState.get('name')).toBe('another name')
     expect(anotherState.get('age')).toBe(newState.get('age'))
+  });
+
+  it('should throw error if call `clear` on String', function() {
+    const initState = State.create()
+    expect(() => State.name.clear(initState)).toThrow(Error)
+  });
+
+  it('should throw error if call `clear` on Number', function() {
+    const initState = State.create()
+    expect(() => State.age.clear(initState)).toThrow(Error)
   });
 })
