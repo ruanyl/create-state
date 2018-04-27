@@ -3,23 +3,23 @@ import { compose, mapObjIndexed } from 'ramda'
 
 import { getField, setField } from './utils'
 
-interface Dictionary {
+export interface Dictionary {
   [key: string]: any
 }
 
-interface StateConfig<T> {
+export interface StateConfig<T> {
   name: string;
   fields: T;
 }
 
-type State = any
+export type State = any
 
-type Getter<T> = (s: State) => T
-type Setter<T> = (v: T) => (s: State) => State
-type EmptyImmutableSetter = (s: State) => State
-type ImmutableSetter = (v: any) => (s: State) => State
+export type Getter<T> = (s: State) => T
+export type Setter<T> = (v: T) => (s: State) => State
+export type EmptyImmutableSetter = (s: State) => State
+export type ImmutableSetter = (v: any) => (s: State) => State
 
-interface ComputedProps<T> {
+export interface ComputedProps<T> {
   getter: Getter<T>;
   setter: Setter<T>;
   clear: EmptyImmutableSetter;
@@ -29,11 +29,11 @@ interface ComputedProps<T> {
   shift: EmptyImmutableSetter;
 }
 
-type ComputedState<T> = {
+export type ComputedState<T> = {
   [P in keyof T]: ComputedProps<T[P]>;
 }
 
-interface EmptyState<T> {
+export interface EmptyState<T> {
   create: () => Map<string, any>;
   name: string;
 }
