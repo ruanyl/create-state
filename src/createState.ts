@@ -18,6 +18,8 @@ export type Getter<T> = (s: State) => T
 export type Setter<T> = (v: T) => (s: State) => State
 export type EmptyImmutableSetter = (s: State) => State
 export type ImmutableSetter = (v: any) => (s: State) => State
+export type ImmutableMapGetter = <K = any>(k: K) => (s: State) => K
+export type ImmutableMapSetter = <K = any, V = any>(k: K, v: V) => (s: State) => Map<K, V>
 
 export interface ComputedProps<T> {
   getter: Getter<T>;
@@ -27,6 +29,10 @@ export interface ComputedProps<T> {
   unshift: ImmutableSetter;
   pop: EmptyImmutableSetter;
   shift: EmptyImmutableSetter;
+  delete: ImmutableSetter;
+  get: ImmutableMapGetter;
+  set: ImmutableMapSetter;
+  add: ImmutableSetter;
 }
 
 export type ComputedState<T> = {
@@ -85,7 +91,20 @@ export const createState = <T extends Dictionary>(config: StateConfig<T>): State
       const c = getter(s)
       return setter(c.shift())(s)
     }
-    const operations = { getter, setter, clear, push, unshift, pop, shift }
+    const remove = (key: any) => (s: State) => {
+      const c = getter(s)
+      return setter(c.delete(key))(s)
+    }
+    const get = (key: any) => compose(c => c.get(key), getter)
+    const set = (key: any, value: any) => (s: State) => {
+      const c = getter(s)
+      return setter(c.set(key, value))(s)
+    }
+    const add = (v: any) => (s: State) => {
+      const c = getter(s)
+      return setter(c.add(v))(s)
+    }
+    const operations = { getter, setter, clear, push, unshift, pop, shift, delete: remove, get, set, add }
 
     return operations
   }
