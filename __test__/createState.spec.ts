@@ -11,7 +11,7 @@ describe('String and Number', () => {
 
   beforeEach(function() {
     State = createState<Fields>({
-      name: 'State',
+      name: 'User',
       fields: {
         name: 'my name',
         age: 10
@@ -21,14 +21,14 @@ describe('String and Number', () => {
 
   it('should have initial state', () => {
     const initState = State.create()
-    expect(initState.get('age')).toBe(10)
-    expect(initState.get('name')).toBe('my name')
+    expect(State.age.getter(initState)).toBe(10)
+    expect(State.name.getter(initState)).toBe('my name')
   })
 
   it('should set a value', function() {
     const initState = State.create()
     const newState = State.age.setter(20)(initState)
-    expect(newState.get('age')).toBe(20)
+    expect(State.age.getter(newState)).toBe(20)
     expect(newState.get('name')).toBe(initState.get('name'))
 
     const anotherState = State.name.setter('another name')(newState)

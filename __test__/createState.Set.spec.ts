@@ -39,5 +39,6 @@ describe('Immutable List', function() {
     const initState = State.create()
     const newState = State.languages.add('JavaScript')(initState)
     expect(State.languages.getter(newState).size).toBe(3)
+    expect(State.languages.getter(newState).toJS()).toEqual(expect.arrayContaining(['PHP', 'Java', 'JavaScript']))
   });
 });

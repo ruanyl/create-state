@@ -40,28 +40,28 @@ describe('Immutable List', function() {
   it('should push value to List', function() {
     const initState = State.create()
     const newState = State.pets.push('rabbit')(initState)
-    expect(newState.get('pets').size).toBe(3)
-    expect(newState.get('pets').toJS()).toEqual(['dog', 'cat', 'rabbit'])
+    expect(State.pets.getter(newState).size).toBe(3)
+    expect(State.pets.getter(newState).toJS()).toEqual(['dog', 'cat', 'rabbit'])
   });
 
   it('should unshift value to List', function() {
     const initState = State.create()
     const newState = State.pets.unshift('rabbit')(initState)
-    expect(newState.get('pets').size).toBe(3)
-    expect(newState.get('pets').toJS()).toEqual(['rabbit', 'dog', 'cat'])
+    expect(State.pets.getter(newState).size).toBe(3)
+    expect(State.pets.getter(newState).toJS()).toEqual(['rabbit', 'dog', 'cat'])
   });
 
   it('should pop value from a List', function() {
     const initState = State.create()
     const newState = State.pets.pop(initState)
-    expect(newState.get('pets').size).toBe(1)
-    expect(newState.get('pets').toJS()).toEqual(['dog'])
+    expect(State.pets.getter(newState).size).toBe(1)
+    expect(State.pets.getter(newState).toJS()).toEqual(['dog'])
   });
 
   it('should shift value from a List', function() {
     const initState = State.create()
     const newState = State.pets.shift(initState)
-    expect(newState.get('pets').size).toBe(1)
-    expect(newState.get('pets').toJS()).toEqual(['cat'])
+    expect(State.pets.getter(newState).size).toBe(1)
+    expect(State.pets.getter(newState).toJS()).toEqual(['cat'])
   });
 });
