@@ -41,4 +41,12 @@ describe('Immutable List', function() {
     expect(State.languages.getter(newState).size).toBe(3)
     expect(State.languages.getter(newState).toJS()).toEqual(expect.arrayContaining(['PHP', 'Java', 'JavaScript']))
   });
+
+  it('should concat two Set', function() {
+    const skillSet = Set(['JavaScript'])
+    const initState = State.create()
+    const newState = State.languages.concat(skillSet)(initState)
+    expect(State.languages.getter(newState).size).toBe(3)
+    expect(State.languages.getter(newState).toJS()).toEqual(expect.arrayContaining(['PHP', 'Java', 'JavaScript']))
+  });
 });

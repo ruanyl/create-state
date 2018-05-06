@@ -64,4 +64,11 @@ describe('Immutable List', function() {
     expect(State.pets.getter(newState).size).toBe(1)
     expect(State.pets.getter(newState).toJS()).toEqual(['cat'])
   });
+
+  it('should concat two List', function() {
+    const initState = State.create()
+    const newState = State.pets.concat(['snake'])(initState)
+    expect(State.pets.getter(newState).size).toBe(3)
+    expect(State.pets.getter(newState).toJS()).toEqual(['dog', 'cat', 'snake'])
+  });
 });

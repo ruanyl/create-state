@@ -35,6 +35,7 @@ export interface ComputedProps<T> {
   add: ValueSetter;
   increase: EmptySetter;
   decrease: EmptySetter;
+  concat: ValueSetter;
 }
 
 export type ComputedState<T> = {
@@ -114,7 +115,11 @@ export const createState = <T extends Dictionary>(config: StateConfig<T>): State
       const v = getter(s)
       return setter(v - 1)(s)
     }
-    const operations = { getter, setter, clear, push, unshift, pop, shift, delete: remove, get, set, add, increase, decrease }
+    const concat = (v: any) => (s: State) => {
+      const c = getter(s)
+      return setter(c.concat(v))(s)
+    }
+    const operations = { getter, setter, clear, push, unshift, pop, shift, delete: remove, get, set, add, increase, decrease, concat }
 
     return operations
   }

@@ -40,4 +40,10 @@ describe('Immutable List', function() {
     const newState = State.job.set('salary', 100)(initState)
     expect(State.job.get('salary')(newState)).toBe(100)
   });
+
+  it('should concat two map', () => {
+    const initState = State.create()
+    const newState = State.job.concat({salary: 200})(initState)
+    expect(State.job.get('salary')(newState)).toBe(200)
+  })
 });
