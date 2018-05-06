@@ -14,8 +14,8 @@ export type Getter<T> = (s: State) => T
 export type Setter<T> = (v: T) => (s: State) => State
 export type EmptySetter = (s: State) => State
 export type ValueSetter = (v: any) => (s: State) => State
-export type ImmutableMapGetter = <K = any>(k: K) => (s: State) => K
-export type ImmutableMapSetter = <K = any, V = any>(k: K, v: V) => (s: State) => Map<K, V>
+export type ImmutableMapGetter = <V = any>(k: string) => (s: State) => V
+export type ImmutableMapSetter = <K = string, V = any>(k: K, v: V) => (s: State) => State
 
 export interface ComputedProps<T> {
   getter: Getter<T>;
