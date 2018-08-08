@@ -1,11 +1,7 @@
-import { Record, Map } from 'immutable'
+import { Record as ImmutableRecord, Map } from 'immutable'
 import { compose, mapObjIndexed } from 'ramda'
 
 import { getField, setField } from './utils'
-
-export interface Dictionary {
-  [key: string]: any
-}
 
 export interface StateConfig<T> {
   name: string;
@@ -49,7 +45,7 @@ export interface EmptyState<T> {
 
 export type StateObject<T> = EmptyState<T> & ComputedState<T>
 
-export const createState = <T extends Dictionary>(config: StateConfig<T>): StateObject<T> => {
+export const createState = <T extends Record<string, any>>(config: StateConfig<T>): StateObject<T> => {
   const g = (state: any) => {
     if (state.has('__root')) {
       return getField(config.name)(state)
@@ -59,7 +55,7 @@ export const createState = <T extends Dictionary>(config: StateConfig<T>): State
 
   const emptyState = {
     create(): Map<string, any> {
-      const StateShape = Record(config.fields)
+      const StateShape = ImmutableRecord(config.fields)
       return new StateShape()
     },
 
