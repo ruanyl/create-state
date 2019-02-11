@@ -1,6 +1,6 @@
 {
   "name": "immutable-state-creator",
-  "version": "0.2.2",
+  "version": "1.0.0-beta1",
   "description": "utilities to create immutable state",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -13,13 +13,13 @@
   },
   "devDependencies": {
     "jest": "^22.4.3",
-    "ts-jest": "^22.4.4",
-    "typescript": "^2.8.3"
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.3.3"
   },
   "dependencies": {
     "@types/jest": "^22.2.3",
-    "@types/ramda": "^0.25.24",
-    "immutable": "^3.8.2",
+    "@types/ramda": "^0.25.48",
+    "immutable": "^4.0.0-rc.12",
     "ramda": "^0.25.0"
   },
   "peerDependencies": {},
