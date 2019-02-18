@@ -1,16 +1,20 @@
+import { List } from 'immutable'
 import { createState } from '../src'
 
 interface Fields {
-  name: string;
-  age: number;
+  name: string
+  age: number
+  active: boolean
+  languages: string[]
+  pets: List<string>
 }
 
-const State = createState<Fields, keyof Fields>({
-  namespace: 'User',
-  fields: {
-    name: 'my name',
-    age: 10
-  }
+const State = createState<Fields, keyof Fields>('User', {
+  name: 'my name',
+  age: 10,
+  languages: ['English'],
+  pets: List.of('cat'),
+  active: true,
 })
 
 describe('String and Number', () => {
@@ -26,8 +30,15 @@ describe('String and Number', () => {
     expect(State.get('age')(newState)).toBe(20)
     expect(newState.get('name')).toBe(initState.get('name'))
 
-    const anotherState = State.set('name', 'another name')(newState)
+    const anotherState = State.set<Fields['name']>('name', 'another name')(newState)
     expect(anotherState.get('name')).toBe('another name')
     expect(anotherState.get('age')).toBe(newState.get('age'))
   });
+
+  it('should toggle a boolean value', () => {
+    const initState = State.create()
+    expect(initState.active).toBe(true)
+    const newState = State.toggle('active')(initState)
+    expect(newState.active).toBe(false)
+  })
 })
