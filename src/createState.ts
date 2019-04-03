@@ -13,21 +13,15 @@ export interface GlobalState {
 
 export type LocalState<T> = ImmutableRecord<T> & Readonly<T>
 
-export const setField = <T extends Record<string, any>, K extends keyof T>(field: K, value: T[K]) =>
-  (state: LocalState<T>) => state.set(field, value)
-
-export const getField = <T extends Record<string, any>, K extends keyof T>(field: K) =>
-  (state: LocalState<T>) => state.get(field)
-
-export interface StateObject<T extends Record<string, any>, K extends keyof T> {
+export interface StateObject<T extends Record<string, any>> {
   create: () => LocalState<T>
-  get: (k: K) => (s: LocalState<T>) => T[K]
-  set: <V extends T[K]>(k: K, v: V) => (s: LocalState<T>) => LocalState<T>
-  toggle: (k: K) => (s: LocalState<T>) => LocalState<T>
+  get: <K extends keyof T>(k: K) => (s: LocalState<T>) => T[keyof T]
+  set: <K extends keyof T>(k: K, v: T[K]) => (s: LocalState<T>) => LocalState<T>
+  toggle: <K extends keyof T>(k: K) => (s: LocalState<T>) => LocalState<T>
   namespace: string
 }
 
-export const createState = <T extends Record<string, any>, K extends keyof T>(namespace: string, fields: T): StateObject<T, K> => {
+export const createState = <T extends Record<string, any>>(namespace: string, fields: T) => {
   const g = (state: GlobalState | LocalState<T>) => {
     if (state.has('__root')) {
       return state.get(namespace)
@@ -40,15 +34,20 @@ export const createState = <T extends Record<string, any>, K extends keyof T>(na
     return new StateShape()
   }
 
-  const get = (k: K) => {
-    return compose(getField<T, K>(k), g)
+  const getField = <K extends keyof T>(field: K) => (state: LocalState<T>) => state.get(field)
+
+  const setField = <K extends keyof T>(field: K, value: T[K]) =>
+    (state: LocalState<T>) => state.set(field, value)
+
+  const get = <K extends keyof T>(k: K) => {
+    return compose(getField(k), g)
   }
 
-  const set = <V extends T[K]>(k: K, v: V) => {
-    return compose(setField<T, K>(k, v), g)
+  const set = <K extends keyof T>(k: K, v: T[K]) => {
+    return compose(setField(k, v), g)
   }
 
-  const toggle = (k: K) => (s: LocalState<T>) => {
+  const toggle = <K extends keyof T>(k: K) => (s: LocalState<T>) => {
     const current = get(k)(s)
     if (typeof current === 'boolean') {
       return set(k, !current as any)(s)

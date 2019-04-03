@@ -1,15 +1,7 @@
 import { List } from 'immutable'
 import { createState } from '../src'
 
-interface Fields {
-  name: string
-  age: number
-  active: boolean
-  languages: string[]
-  pets: List<string>
-}
-
-const State = createState<Fields, keyof Fields>('User', {
+const State = createState('User', {
   name: 'my name',
   age: 10,
   languages: ['English'],
@@ -30,7 +22,7 @@ describe('String and Number', () => {
     expect(State.get('age')(newState)).toBe(20)
     expect(newState.get('name')).toBe(initState.get('name'))
 
-    const anotherState = State.set<Fields['name']>('name', 'another name')(newState)
+    const anotherState = State.set('name', 'another name')(newState)
     expect(anotherState.get('name')).toBe('another name')
     expect(anotherState.get('age')).toBe(newState.get('age'))
   });
