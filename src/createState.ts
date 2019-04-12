@@ -15,7 +15,7 @@ export type LocalState<T> = ImmutableRecord<T> & Readonly<T>
 
 export interface StateObject<T extends Record<string, any>> {
   create: () => LocalState<T>
-  get: <K extends keyof T>(k: K) => (s: LocalState<T>) => T[keyof T]
+  get: <K extends keyof T>(k: K) => (s: LocalState<T>) => T[K]
   set: <K extends keyof T>(k: K, v: T[K]) => (s: LocalState<T>) => LocalState<T>
   toggle: <K extends keyof T>(k: K) => (s: LocalState<T>) => LocalState<T>
   namespace: string
