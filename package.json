@@ -1,6 +1,6 @@
 {
   "name": "immutable-state-creator",
-  "version": "1.0.0-beta5",
+  "version": "1.0.0-beta6",
   "description": "utilities to create immutable state",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

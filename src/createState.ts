@@ -21,7 +21,7 @@ export interface StateObject<T extends Record<string, any>> {
   namespace: string
 }
 
-export const createState = <T extends Record<string, any>>(namespace: string, fields: T) => {
+export const createState = <T extends Record<string, any>>(namespace: string, fields: T): StateObject<T> => {
   const g = (state: GlobalState | LocalState<T>) => {
     if (state.has('__root')) {
       return state.get(namespace)
