@@ -1,6 +1,6 @@
 {
   "name": "immutable-state-creator",
-  "version": "1.0.0-beta6",
+  "version": "1.0.1",
   "description": "utilities to create immutable state",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -12,17 +12,19 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "jest": "^24.5.0",
-    "ts-jest": "^23.10.5",
-    "typescript": "^3.3.3"
-  },
-  "dependencies": {
     "@types/jest": "^22.2.3",
     "@types/ramda": "^0.25.48",
+    "jest": "^24.5.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.3.3",
     "immutable": "^4.0.0-rc.12",
     "ramda": "^0.25.0"
   },
-  "peerDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {
+    "immutable": "^3.8.1 || ^4.0.0-rc.1",
+    "ramda": "^0.25.0"
+  },
   "author": "Yulong Ruan <ruanyu1@gmail.com>",
   "license": "MIT",
   "keywords": [
