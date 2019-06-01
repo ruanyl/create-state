@@ -1,6 +1,6 @@
 {
   "name": "immutable-state-creator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "utilities to create immutable state",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -23,7 +23,7 @@
   "dependencies": {},
   "peerDependencies": {
     "immutable": "^3.8.1 || ^4.0.0-rc.1",
-    "ramda": "^0.25.0"
+    "ramda": ">= 0.25.0"
   },
   "author": "Yulong Ruan <ruanyu1@gmail.com>",
   "license": "MIT",
