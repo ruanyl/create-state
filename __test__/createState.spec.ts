@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+import { List, Map } from 'immutable'
 import { createState } from '../src'
 
 const State = createState('User', {
@@ -11,16 +11,17 @@ const State = createState('User', {
 
 describe('String and Number', () => {
   it('should have initial state', () => {
-    const initState = State.create()
-    expect(State.get('age')(initState)).toBe(10)
-    expect(State.get('name')(initState)).toBe('my name')
+    const localState = State.create()
+    expect(localState.get('age')).toBe(10)
+    expect(localState.get('name')).toBe('my name')
   })
 
   it('should set a value', function() {
-    const initState = State.create()
-    const newState = State.set('age', 20)(initState)
-    expect(State.get('age')(newState)).toBe(20)
-    expect(newState.get('name')).toBe(initState.get('name'))
+    const localState = State.create()
+
+    const newState = State.set('age', 20)(localState)
+    expect(newState.get('age')).toBe(20)
+    expect(newState.get('name')).toBe(localState.get('name'))
 
     const anotherState = State.set('name', 'another name')(newState)
     expect(anotherState.get('name')).toBe('another name')
@@ -32,5 +33,16 @@ describe('String and Number', () => {
     expect(initState.active).toBe(true)
     const newState = State.toggle('active')(initState)
     expect(newState.active).toBe(false)
+  })
+
+  it('should create selectors', () => {
+    const localState = State.create()
+    const globalState = Map({
+      [State.namespace]: localState,
+    })
+    expect(State.selectors.active(globalState)).toBe(true)
+    expect(State.selectors.age(globalState)).toBe(10)
+    expect(State.selectors.languages(globalState)).toEqual(['English'])
+    expect(State.selectors.pets(globalState)).toEqual(List.of('cat'))
   })
 })
