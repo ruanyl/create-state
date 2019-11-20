@@ -22,6 +22,13 @@
   "peerDependencies": {
     "immutable": "^3.8.1 || ^4.0.0-rc.1"
   },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  },
+
   "author": "Yulong Ruan <ruanyu1@gmail.com>",
   "license": "MIT",
   "keywords": [

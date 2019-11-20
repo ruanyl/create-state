@@ -9,9 +9,16 @@ export type GlobalState = Map<string, any>
 
 export type State<T> = ImmutableRecord<T> & Readonly<T>
 
-export type Selectors<T extends Record<string, any>> = {
+export type FieldSelectors<T extends Record<string, any>> = {
   [K in keyof T]: (state: GlobalState) => T[K]
 }
+
+export type SelfSelector<T extends Record<string, any>> = {
+  self: (state: GlobalState) => T
+}
+
+export type Selectors<T extends Record<string, any>> = FieldSelectors<T> &
+  SelfSelector<T>
 
 export interface StateObject<T extends Record<string, any>> {
   create: () => State<T>
@@ -22,15 +29,17 @@ export interface StateObject<T extends Record<string, any>> {
   namespace: string
 }
 
-export const createState = <T extends Record<string, any>>(namespace: string, fields: T): StateObject<T> => {
-
+export const createState = <T extends Record<string, any>>(
+  namespace: string,
+  fields: T
+): StateObject<T> => {
   const create = () => {
     const StateShape = ImmutableRecord<T>(fields)
     return new StateShape()
   }
 
   const get = <K extends keyof T>(k: K) => (state: GlobalState) => {
-    const localState: State<T>  = state.get(namespace)
+    const localState: State<T> = state.get(namespace)
     return localState.get(k)
   }
 
@@ -43,7 +52,9 @@ export const createState = <T extends Record<string, any>>(namespace: string, fi
     if (typeof current === 'boolean') {
       return state.set(k, !current as any)
     }
-    console.error(`Can not toggle the value of: ${namespace}.${k}, which has to be a boolean`)
+    console.error(
+      `Can not toggle the value of: ${namespace}.${k}, which has to be a boolean`
+    )
     return state
   }
 
@@ -51,6 +62,7 @@ export const createState = <T extends Record<string, any>>(namespace: string, fi
   Object.keys(fields).forEach(k => {
     selectors[k] = get(k)
   })
+  selectors['self'] = (state: GlobalState) => state.get(namespace)
 
   return {
     create,

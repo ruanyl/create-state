@@ -1,4 +1,5 @@
 import { List, Map } from 'immutable'
+
 import { createState } from '../src'
 
 const State = createState('User', {
@@ -26,7 +27,7 @@ describe('String and Number', () => {
     const anotherState = State.set('name', 'another name')(newState)
     expect(anotherState.get('name')).toBe('another name')
     expect(anotherState.get('age')).toBe(newState.get('age'))
-  });
+  })
 
   it('should toggle a boolean value', () => {
     const initState = State.create()
@@ -44,5 +45,6 @@ describe('String and Number', () => {
     expect(State.selectors.age(globalState)).toBe(10)
     expect(State.selectors.languages(globalState)).toEqual(['English'])
     expect(State.selectors.pets(globalState)).toEqual(List.of('cat'))
+    expect(State.selectors.self(globalState)).toEqual(localState)
   })
 })
