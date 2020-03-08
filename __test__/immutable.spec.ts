@@ -1,6 +1,6 @@
 import { List, Map } from 'immutable'
 
-import { createState } from '../src'
+import { createState } from '../src/immutable'
 
 const State = createState('User', {
   name: 'my name',
@@ -15,25 +15,6 @@ describe('String and Number', () => {
     const localState = State.create()
     expect(localState.get('age')).toBe(10)
     expect(localState.get('name')).toBe('my name')
-  })
-
-  it('should set a value', function() {
-    const localState = State.create()
-
-    const newState = State.set('age', 20)(localState)
-    expect(newState.get('age')).toBe(20)
-    expect(newState.get('name')).toBe(localState.get('name'))
-
-    const anotherState = State.set('name', 'another name')(newState)
-    expect(anotherState.get('name')).toBe('another name')
-    expect(anotherState.get('age')).toBe(newState.get('age'))
-  })
-
-  it('should toggle a boolean value', () => {
-    const initState = State.create()
-    expect(initState.active).toBe(true)
-    const newState = State.toggle('active')(initState)
-    expect(newState.active).toBe(false)
   })
 
   it('should create selectors', () => {
