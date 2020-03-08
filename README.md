@@ -3,10 +3,10 @@
 An utility to easily create immutable state for Redux
 
 ## Usage
-#### Primitive types
+#### With immutablejs
 1. Define the State
 ```typescript
-import { createState, StateObject } from 'immutable-state-creator'
+import { createState } from 'immutable-state-creator/immutable'
 
 const State = createState('User', {
   name: 'my name',
@@ -20,24 +20,41 @@ const State = createState('User', {
 2. Create initial state
 ```typescript
 const initState = State.create()
+const globalState = Map({
+  [State.namespace]: localState,
+})
 ```
 
-3. Use `getter` to select value
+3. Use `selectors` to select value
 ```typescript
-expect(State.get('age')(initState)).toBe(10)
-expect(State.get('name')(initState)).toBe('my name')
+expect(State.selectors.age(globalState)).toBe(10)
+expect(State.selectors.active(globalState)).toBe(true)
 ```
 
-4. Use `setter` to update a value
+#### With plain object
+1. Define the State
 ```typescript
-const newState = State.set('age', 20)(initState)
-expect(State.get('age')(newState)).toBe(20)
+import { createState } from 'immutable-state-creator'
+
+const State = createState('User', {
+  name: 'my name',
+  age: 10,
+  languages: ['English'],
+  pets: ['cat'],
+  active: true,
+})
 ```
 
-#### Toggle boolean value
+2. Create initial state
 ```typescript
 const initState = State.create()
-expect(initState.active).toBe(true)
-const newState = State.toggle('active')(initState)
-expect(newState.active).toBe(false)
+const globalState = {
+  [State.namespace]: localState,
+}
+```
+
+3. Use `selectors` to select value
+```typescript
+expect(State.selectors.age(globalState)).toBe(10)
+expect(State.selectors.active(globalState)).toBe(true)
 ```

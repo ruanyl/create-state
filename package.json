@@ -1,6 +1,6 @@
 {
   "name": "immutable-state-creator",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "utilities to create immutable state",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -10,7 +10,7 @@
     "test": "npm run test-only",
     "test-only": "jest --coverage",
     "test:watch": "jest --watch",
-    "release": "yarn build && cp package.json ./lib && cd ./lib && npm publish --ignore-scripts"
+    "release": "npm run build && cp package.json ./lib && cd ./lib && npm publish --ignore-scripts"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
