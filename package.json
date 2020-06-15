@@ -13,11 +13,11 @@
     "release": "npm run build && cp package.json ./lib && cd ./lib && npm publish --ignore-scripts"
   },
   "devDependencies": {
-    "@types/jest": "^22.2.3",
+    "@types/jest": "^26.0.0",
     "immutable": "^4.0.0-rc.12",
-    "jest": "^24.5.0",
-    "ts-jest": "^23.10.5",
-    "typescript": "3.8"
+    "jest": "^26.0.1",
+    "ts-jest": "^26.1.0",
+    "typescript": "3.9"
   },
   "peerDependencies": {
     "immutable": "^3.8.1 || ^4.0.0-rc.1"
@@ -26,7 +26,8 @@
     "trailingComma": "es5",
     "tabWidth": 2,
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "printWidth": 120
   },
   "author": "Yulong Ruan <ruanyu1@gmail.com>",
   "license": "MIT",

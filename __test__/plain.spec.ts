@@ -1,22 +1,18 @@
-import { createState } from '../src/plain'
+import { Record } from 'immutable'
+import { createState } from '../src/'
 
-const State = createState('User', {
+const localState = {
   name: 'my name',
   age: 10,
   languages: ['English'],
   pets: ['cat'],
   active: true,
-})
+}
+
+const State = createState('User', localState)
 
 describe('String and Number', () => {
-  it('should have initial state', () => {
-    const localState = State.create()
-    expect(localState.age).toBe(10)
-    expect(localState.name).toBe('my name')
-  })
-
   it('should create selectors', () => {
-    const localState = State.create()
     const globalState = {
       [State.namespace]: localState,
     }
@@ -25,5 +21,23 @@ describe('String and Number', () => {
     expect(State.selectors.languages(globalState)).toEqual(['English'])
     expect(State.selectors.pets(globalState)).toEqual(['cat'])
     expect(State.selectors.self(globalState)).toEqual(localState)
+  })
+})
+
+const ImmutableShape = Record(localState)
+const immutableLocalState = new ImmutableShape()
+
+const ImmutableState = createState('User', immutableLocalState)
+
+describe('String and Number', () => {
+  it('should create selectors', () => {
+    const globalState = {
+      [State.namespace]: localState,
+    }
+    expect(ImmutableState.selectors.active(globalState)).toBe(true)
+    expect(ImmutableState.selectors.age(globalState)).toBe(10)
+    expect(ImmutableState.selectors.languages(globalState)).toEqual(['English'])
+    expect(ImmutableState.selectors.pets(globalState)).toEqual(['cat'])
+    expect(ImmutableState.selectors.self(globalState)).toEqual(localState)
   })
 })
