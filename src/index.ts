@@ -1,12 +1,12 @@
 import { Record as ImmutableRecord, Map } from 'immutable'
 
-export type AnyState = Record<string, any>
+export type StateShape = Record<string, any>
 
-export type GlobalState = Record<string, AnyState> | Map<string, ImmutableRecord<AnyState>>
+export type GlobalState = Record<string, StateShape> | Map<string, ImmutableRecord<StateShape>>
 
-export type State<T = AnyState> = T | ImmutableRecord<T>
+export type State<T = StateShape> = T | ImmutableRecord<T>
 
-export type FieldSelectors<T extends AnyState> = {
+export type FieldSelectors<T extends StateShape> = {
   [K in keyof T]: (state: GlobalState) => T[K]
 }
 
@@ -14,20 +14,20 @@ export type SelfSelector<S extends State> = {
   self: (state: GlobalState) => S
 }
 
-export type Selectors<T extends AnyState, S extends State<T>> = FieldSelectors<T> & SelfSelector<S>
+export type Selectors<T extends StateShape, S extends State<T>> = FieldSelectors<T> & SelfSelector<S>
 
-export interface StateObject<T extends AnyState, S extends State<T>> {
+export interface StateObject<T extends StateShape, S extends State<T>> {
   get: <K extends keyof T>(k: K) => (s: GlobalState) => T[K]
   selectors: FieldSelectors<T> & SelfSelector<S>
   namespace: string
 }
 
 interface CreateState {
-  <T extends AnyState>(namespace: string, fields: T): StateObject<T, T>
-  <T extends AnyState>(namespace: string, fields: ImmutableRecord<T>): StateObject<T, ImmutableRecord<T>>
+  <T extends StateShape>(namespace: string, fields: T): StateObject<T, T>
+  <T extends StateShape>(namespace: string, fields: ImmutableRecord<T>): StateObject<T, ImmutableRecord<T>>
 }
 
-export const createState: CreateState = <T extends AnyState>(namespace: string, fields: State<T>) => {
+export const createState: CreateState = <T extends StateShape>(namespace: string, fields: State<T>) => {
   const initial: T = ImmutableRecord.isRecord(fields) ? fields.toObject() : fields
 
   const get = <K extends keyof T>(k: K) => (state: GlobalState) => {
